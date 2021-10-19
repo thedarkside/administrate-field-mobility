@@ -18,8 +18,12 @@ module Administrate
           data.to_s[0...truncation_length]
         end
 
+        def type
+          options.fetch(:type, 'text')
+        end
+
         def to_partial_path
-          "/fields/mobility/text/#{page}"
+          "/fields/mobility/#{type}/#{page}"
         end
 
         private
