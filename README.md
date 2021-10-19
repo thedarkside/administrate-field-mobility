@@ -37,6 +37,40 @@ Add the Administrate Mobility Field to your dashboard.
   }.freeze
 ```
 
+There is an `type` option you can set to change the partial path. 
+This is useful when using different mobility-backends which need different renderings 
+like `mobility-actiontext`.
+
+```ruby
+  ATTRIBUTE_TYPES = {
+    description: Field::Mobility::Text.with_options(type: 'actiontext'),
+  }.freeze
+```
+
+```erb
+# file app/views/fields/mobility/actiontext/_form.html.erb
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+<div class="field-unit__field">
+  <% I18n.available_locales.each do |locale| %>
+    <%= f.rich_text_area "#{field.attribute}_#{locale}".downcase.underscore %>
+    (<%= locale %>)
+  <% end %>
+</div>
+```
+
+```erb
+# file app/views/fields/mobility/actiontext/_show.html.erb
+<% I18n.available_locales.each do |locale| %>
+  <% I18n.with_locale(locale) do %>
+    <%== "#{field.resource.send(field.attribute.to_sym)}" %>
+    <%= "(#{locale})" %>
+  <% end %>
+  <br>
+<% end %>
+```
+
 Credits
 ----------------------
 
